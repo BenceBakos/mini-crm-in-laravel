@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,6 +24,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
 	//company
+	\App\Models\Company::factory()
+	    ->count(10)
+	    ->create();
+	
+	//employees, assigned to random company
+	\App\Models\Employee::factory()
+	    ->count(100)
+	    ->create();
 	
     }
 }

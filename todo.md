@@ -80,3 +80,5 @@ F name(REQ), L name(REQ), choose company(REQ), email, phone
  - Better UX for moving emplonyee between companies
  - multi delete api route
  - seeder in different files
+ - company, employee migration down method implementation(foreign keys)
+
