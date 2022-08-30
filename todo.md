@@ -17,35 +17,7 @@ https://hub.docker.com/r/bitnami/laravel/
 
 ## Server(josn api, with and without autentiaction)
 
-### Public
-
-#### List Companies;
-
-#### List Employees;
-
-#### List company employees(company id);
-
-#### Get employee data(employee id)
-
-#### Get company data(company id);
-
-### Private(authenticated)
-
-### Create company(name(REQ), logo, email, phone)
-
-### Edit company(company id, name(REQ), logo, email, phone)
-
-### Create employee(f-name(REQ), l-name(REQ), company(REQ), email, phone)
-
-### Delete company(company id)
-only when employees not present in the company
-
-### Edit employee(employee id, f-name(REQ), l-name(REQ), company(REQ), email, phone)
-
-### Delete employee(employee id)
-
-### Move employee(employee id, from company id, to company id)
-
+### Authentication
 
 ## Client
 
@@ -81,4 +53,5 @@ F name(REQ), L name(REQ), choose company(REQ), email, phone
  - multi delete api route
  - seeder in different files
  - company, employee migration down method implementation(foreign keys)
+ - validationg email with "email" => "email:rfc,dns" (keep the option of leaving it empty)
  - validationg phone number with regex

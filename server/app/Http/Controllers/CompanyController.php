@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class CompanyController extends Controller
 {
@@ -20,7 +21,6 @@ class CompanyController extends Controller
 	);
     }
 
-
     /**
      * Store a newly created resource in storage.
      *
@@ -29,6 +29,10 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
+	$request->validate([
+	    "name" => "requiered",
+	]);
+
         $company = new Company;
 
 	$company->name = $request->name;
@@ -37,6 +41,8 @@ class CompanyController extends Controller
 	$company->logo = $request->logo;
 
 	$company->save();
+
+	return $company;
     }
 
     /**
@@ -59,6 +65,10 @@ class CompanyController extends Controller
      */
     public function update(Request $request, Company $company)
     {
+	$request->validate([
+	    "name" => "requiered",
+	]);
+
 	$company->name = $request->name;
 	$company->email = $request->email;
 	$company->website = $request->website;
@@ -66,23 +76,26 @@ class CompanyController extends Controller
 
         $company->save();
 
+	return $company;
 
-	return back()->with('success', 'Company updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
     public function destroy(Company $company)
     {
-	//check for users are present
-
+	//check for employees are present
+	if ($company->employees()->get()->count() !== 0){
+	    throw ValidationException::withMessages(['company' => "Company heve employees present, please move or delete them."]);
+	}
 
         $company->delete();
 
-	return back()->with('success', 'Company deleted successfully');
+	return response()->json(null, 204);
     }
 }

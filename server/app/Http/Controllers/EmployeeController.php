@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
-use GuzzleHttp\Psr7\Response;
+use App\Models\Company;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Validation\ValidationException;
 
 class EmployeeController extends Controller
 {
@@ -29,6 +31,16 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
+	$request->validate([
+	    "first_name" => "requiered",
+	    "last_name" => "requiered",
+	    "company_id" => "requiered",
+	]);
+
+	if (!Company::where("id", $request->company_id)->exists()){
+	    throw ValidationException::withMessages(['company' => "Selected company does not exists!"]);
+	}
+
         $employee = new Employee;
 
 	$employee->first_name = $request->first_name;
@@ -38,6 +50,8 @@ class EmployeeController extends Controller
 	$employee->company_id = $request->company_id;
 
 	$employee->save();
+
+	return $employee;
     }
 
     /**
@@ -64,8 +78,12 @@ class EmployeeController extends Controller
 	$request->validate([
 	    "first_name" => "requiered",
 	    "last_name" => "requiered",
-	    "email" => "email:rfc,dns"
+	    "company_id" => "requiered",
 	]);
+
+	if (!Company::where("id", $request->company_id)->exists()){
+	    throw ValidationException::withMessages(['company' => "Selected company does not exists!"]);
+	}
 
 	$employee->first_name = $request->first_name;
 	$employee->last_name = $request->last_name;
@@ -74,7 +92,7 @@ class EmployeeController extends Controller
 	$employee->company_id = $request->company_id;
         $employee->save();
 
-	return back()->with('success', 'Employee updated successfully');
+	return $employee;
     }
 
     /**
@@ -87,6 +105,6 @@ class EmployeeController extends Controller
     {
         $employee->delete();
 
-	return back()->with('success', 'Employee deleted successfully');
+	return response()->json(null, 204);
     }
 }
