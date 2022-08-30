@@ -19,15 +19,15 @@ https://hub.docker.com/r/bitnami/laravel/
 
 ### Public
 
-#### List Companies
+#### List Companies;
 
-#### List Employees
+#### List Employees;
 
-#### List company employees(company id)
+#### List company employees(company id);
 
 #### Get employee data(employee id)
 
-#### Get company data(company id)
+#### Get company data(company id);
 
 ### Private(authenticated)
 
@@ -81,4 +81,4 @@ F name(REQ), L name(REQ), choose company(REQ), email, phone
  - multi delete api route
  - seeder in different files
  - company, employee migration down method implementation(foreign keys)
-
+ - validationg phone number with regex

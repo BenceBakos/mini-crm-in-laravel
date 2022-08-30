@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -14,18 +15,11 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+	return response()->json(
+	    Company::withCount('employees')->get()
+	);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +29,14 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $company = new Company;
+
+	$company->name = $request->name;
+	$company->email = $request->email;
+	$company->website = $request->website;
+	$company->logo = $request->logo;
+
+	$company->save();
     }
 
     /**
@@ -46,18 +47,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Company  $company
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Company $company)
-    {
-        //
+        return response()->json($company->load(['employees']));
     }
 
     /**
@@ -69,7 +59,15 @@ class CompanyController extends Controller
      */
     public function update(Request $request, Company $company)
     {
-        //
+	$company->name = $request->name;
+	$company->email = $request->email;
+	$company->website = $request->website;
+	$company->logo = $request->logo;
+
+        $company->save();
+
+
+	return back()->with('success', 'Company updated successfully');
     }
 
     /**
@@ -80,6 +78,11 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        //
+	//check for users are present
+
+
+        $company->delete();
+
+	return back()->with('success', 'Company deleted successfully');
     }
 }

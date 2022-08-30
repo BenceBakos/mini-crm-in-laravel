@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -14,17 +15,10 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
-    }
+	return response()->json(
+	    Employee::all()
+	);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -35,7 +29,15 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $employee = new Employee;
+
+	$employee->first_name = $request->first_name;
+	$employee->last_name = $request->last_name;
+	$employee->email = $request->email;
+	$employee->phone = $request->phone;
+	$employee->company_id = $request->company_id;
+
+	$employee->save();
     }
 
     /**
@@ -46,19 +48,9 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        //
+        return response()->json($employee);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Employee $employee)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -69,7 +61,20 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
-        //
+	$request->validate([
+	    "first_name" => "requiered",
+	    "last_name" => "requiered",
+	    "email" => "email:rfc,dns"
+	]);
+
+	$employee->first_name = $request->first_name;
+	$employee->last_name = $request->last_name;
+	$employee->email = $request->email;
+	$employee->phone = $request->phone;
+	$employee->company_id = $request->company_id;
+        $employee->save();
+
+	return back()->with('success', 'Employee updated successfully');
     }
 
     /**
@@ -80,6 +85,8 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        //
+        $employee->delete();
+
+	return back()->with('success', 'Employee deleted successfully');
     }
 }
