@@ -32,6 +32,7 @@ class CompanyController extends Controller
     {
 	$request->validate([
 	    "name" => "required",
+	    "logo" => "mimes:jpg,bmp,png",
 	]);
 
         $company = new Company;
@@ -39,7 +40,11 @@ class CompanyController extends Controller
 	$company->name = $request->name;
 	$company->email = $request->email;
 	$company->website = $request->website;
-	$company->logo = $request->logo;
+
+	//get only filename
+	$logo_path = $request->file('logo')->store('public/company_logos');
+	$logo_path = str_replace("public/company_logos/","",$logo_path);
+	$company->logo = $logo_path;
 
 	$company->save();
 
@@ -68,12 +73,17 @@ class CompanyController extends Controller
     {
 	$request->validate([
 	    "name" => "required",
+	    "logo" => "mimes:jpg,bmp,png",
 	]);
 
 	$company->name = $request->name;
 	$company->email = $request->email;
 	$company->website = $request->website;
-	$company->logo = $request->logo;
+
+	//get only filename
+	$logo_path = $request->file('logo')->store('storage/company_logos');
+	$logo_path = str_replace("storage/company_logos/","",$logo_path);
+	$company->logo = $logo_path;
 
         $company->save();
 

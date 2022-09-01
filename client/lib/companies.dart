@@ -192,7 +192,7 @@ class _CompaniesViewState extends State<CompaniesView> {
                             cells: <DataCell>[
                               DataCell(Container(
                                   width: 60,
-                                  child: Image.network(companies[index]['logo']))),
+                                  child: Image.network(COMPANY_LOGO_BASE+companies[index]['logo']))),
                               DataCell(Container(
                                   width: 120,
                                   child: Text(companies[index]['name']))),

@@ -12,6 +12,7 @@ part 'editEmployee.dart';
 
 
 const String API_BASE = "http://localhost:8000/api/";
+const String COMPANY_LOGO_BASE = "http://localhost:8001/company_logos/";
 const String ALL_TEXT = "-- ALL --";
 
 void main() async {
