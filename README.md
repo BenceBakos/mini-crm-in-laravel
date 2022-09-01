@@ -37,14 +37,17 @@ Password:
 hardcoded
 ```
 
-## Build flutter(only necessary for development):
+## Flutter
+For the sake of simplicity, I added flutter build to the repository, so you don't have to build it.
+
+### Build flutter(only necessary for development):
 In `client` folder run:
 ```
 flutter build web
 ```
 after building, the files from `/client/build/web` will be served on `http://localhost:8001/`
 
-## Development in flutter
+### Development in flutter
 Flutter let's you use chrome(ium) as your dev device, no need to build every time to use the API, you can use the API provided by laravel in that device. :)
 
 ## sources
