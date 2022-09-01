@@ -20,7 +20,7 @@ class CompanyFactory extends Factory
 	    "name" => fake()->company(),
 	    "email"=> fake()->email(),
 	    "website"=>fake()->url(),
-	    "logo"=>"logo.jpg",
+	    "logo"=>"",
         ];
     }
 }
