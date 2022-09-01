@@ -12,7 +12,6 @@ part 'editCompany.dart';
 part 'employees.dart';
 part 'editEmployee.dart';
 
-
 const String API_BASE = "http://localhost:8000/api/";
 const String COMPANY_LOGO_BASE = "http://localhost:8001/company_logos/";
 const String ALL_TEXT = "-- ALL --";
@@ -59,9 +58,29 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _logout() {
-    setState(() {
-      _authenticated = false;
+  void _logout() async {
+    Api.logout().then((r) {
+      if (r) {
+        setState(() {
+          _authenticated = false;
+        });
+      } else {
+        showDialog(
+            context: context,
+            builder: (BuildContext ctx) {
+              return AlertDialog(
+                title: const Text('Error'),
+                content: Text("Unable to log out"),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text("Ok"))
+                ],
+              );
+            });
+      }
     });
   }
 
@@ -69,14 +88,14 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => CompaniesView(authenticated: true)));
+            builder: (context) => CompaniesView(authenticated: authenticated)));
   }
 
-    void _employee(context, authenticated) {
+  void _employee(context, authenticated) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => EmployeesView(authenticated: true)));
+            builder: (context) => EmployeesView(authenticated: authenticated)));
   }
 
   @override

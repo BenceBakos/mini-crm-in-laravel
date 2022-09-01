@@ -10,6 +10,15 @@ use Illuminate\Validation\ValidationException;
 class CompanyController extends Controller
 {
 
+    public function __construct()
+    {
+	$this->middleware('auth:sanctum',['only'=>[
+	    'store',
+	    'update',
+	    'destroy',
+	]]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -39,6 +48,7 @@ class CompanyController extends Controller
 	$company->name = $request->name;
 	$company->email = $request->email;
 	$company->website = $request->website;
+	$company->logo = "";
 	
 	$company->save();
 

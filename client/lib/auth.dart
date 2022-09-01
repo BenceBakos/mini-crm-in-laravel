@@ -23,25 +23,50 @@ class _AuthenticationViewState extends State<AuthenticationView> {
 
   void _login(context) async {
     if (_formKey.currentState!.validate()) {
-
-      Navigator.pop(context, true);
+      Api.login(_userController.text, _passwordController.text)
+          .then((isAuthenticated) {
+        if (isAuthenticated) {
+          Navigator.pop(context, true);
+        } else {
+          showDialog(
+              context: context,
+              builder: (BuildContext ctx) {
+                return AlertDialog(
+                  title: const Text('Unable to login.'),
+                  content: Text("Incorrect authentication data!"),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text("Ok"))
+                  ],
+                );
+              });
+        }
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    appBar: AppBar(
-        title: Text("Admin login"),
+      appBar: AppBar(
+        title: const Text("Admin login"),
       ),
-
-
       body: Form(
           key: _formKey,
           child: ListView(children: [
             Padding(
                 padding: const EdgeInsets.all(20),
                 child: TextFormField(
+                  validator: (value) {
+                    if (value != null && value.isEmpty) {
+                      return "Please fill in your email";
+                    }
+
+                    return null;
+                  },
                   controller: _userController,
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), labelText: "User"),
@@ -49,6 +74,13 @@ class _AuthenticationViewState extends State<AuthenticationView> {
             Padding(
                 padding: const EdgeInsets.all(20),
                 child: TextFormField(
+                  validator: (value) {
+                    if (value != null && value.isEmpty) {
+                      return "Please fill in your hardcoded password";
+                    }
+
+                    return null;
+                  },
                   obscureText: true,
                   controller: _passwordController,
                   decoration: const InputDecoration(

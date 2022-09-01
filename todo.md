@@ -24,5 +24,4 @@ https://hub.docker.com/r/bitnami/laravel/
  - test the whole thing
  - build
  - test on different computer
- - link to email, phone number
  - how to start it up

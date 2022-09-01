@@ -224,14 +224,14 @@ class _EditEmployeeViewState extends State<EditEmployeeView> {
                   child: TextFormField(
                     controller: _emailController,
                     decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: "Website"),
+                        border: OutlineInputBorder(), labelText: "Email"),
                   )),
               Padding(
                   padding: const EdgeInsets.all(20),
                   child: TextFormField(
                     controller: _phoneController,
                     decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: "Logo"),
+                        border: OutlineInputBorder(), labelText: "Phone"),
                   )),
               Padding(
                   padding: const EdgeInsets.all(20),

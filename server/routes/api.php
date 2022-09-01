@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//authentication
+use App\Http\Controllers\AuthenticationController;
+
+Route::post('/login', [AuthenticationController::class, 'login'])->name("login");
+
+Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
+
 use App\Models\Company;
 
 /**
@@ -37,7 +44,7 @@ Route::post('/company/upload_logo/{id}', function (Request $request,int $id) {
     $company->save();
 
     return $company;
-});
+})->middleware('auth:sanctum');
 
 use App\Http\Controllers\CompanyController;
 Route::apiResource('company',CompanyController::class);
