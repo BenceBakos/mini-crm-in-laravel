@@ -37,6 +37,15 @@ Password:
 hardcoded
 ```
 
+### Troubleshoot
+
+## "file_get_contents(/app/.env): Failed to open stream: No such file or directory" error
+```
+cp server/.env.example server/.env.exaple
+sudo docker-compose exec myapp php artisan key:generate
+```
+
+
 ## Flutter
 For the sake of simplicity, I added flutter build to the repository, so you don't have to build it.
 
