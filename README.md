@@ -10,6 +10,16 @@
 docker-compose up
 ```
 
+## Build flutter:
+In `client` folder run:
+```
+flutter build web
+```
+after building, the files from `/client/build/web` will be served on `http://localhost:8001/`
+
+## Development in flutter
+Flutter let's you use chrome(ium) as your dev device, no need to build every time to use the API, you can use the API provided by laravel in that device. :)
+
 ## sources
 
  - https://hub.docker.com/r/bitnami/laravel/

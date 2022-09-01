@@ -32,13 +32,16 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
 	$request->validate([
-	    "first_name" => "requiered",
-	    "last_name" => "requiered",
-	    "company_id" => "requiered",
+	    "first_name" => "required",
+	    "last_name" => "required",
+	    "company_id" => "required",
 	]);
 
 	if (!Company::where("id", $request->company_id)->exists()){
-	    throw ValidationException::withMessages(['company' => "Selected company does not exists!"]);
+	    return response()->json([
+		"message" => "Selected company does not exitst"
+	    ], 405);
+
 	}
 
         $employee = new Employee;
@@ -76,13 +79,16 @@ class EmployeeController extends Controller
     public function update(Request $request, Employee $employee)
     {
 	$request->validate([
-	    "first_name" => "requiered",
-	    "last_name" => "requiered",
-	    "company_id" => "requiered",
+	    "first_name" => "required",
+	    "last_name" => "required",
+	    "company_id" => "required",
 	]);
 
 	if (!Company::where("id", $request->company_id)->exists()){
-	    throw ValidationException::withMessages(['company' => "Selected company does not exists!"]);
+	    return response()->json([
+		"message" => "Selected company does not exitst"
+	    ], 405);
+
 	}
 
 	$employee->first_name = $request->first_name;

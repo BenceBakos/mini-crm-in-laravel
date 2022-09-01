@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class CompanyController extends Controller
@@ -30,7 +31,7 @@ class CompanyController extends Controller
     public function store(Request $request)
     {
 	$request->validate([
-	    "name" => "requiered",
+	    "name" => "required",
 	]);
 
         $company = new Company;
@@ -66,7 +67,7 @@ class CompanyController extends Controller
     public function update(Request $request, Company $company)
     {
 	$request->validate([
-	    "name" => "requiered",
+	    "name" => "required",
 	]);
 
 	$company->name = $request->name;
@@ -83,7 +84,6 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
@@ -91,7 +91,10 @@ class CompanyController extends Controller
     {
 	//check for employees are present
 	if ($company->employees()->get()->count() !== 0){
-	    throw ValidationException::withMessages(['company' => "Company heve employees present, please move or delete them."]);
+
+	    return response()->json([
+		"message" => "Please delete or move all employees of the company"
+	    ], 405);
 	}
 
         $company->delete();

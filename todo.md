@@ -22,9 +22,10 @@ https://hub.docker.com/r/bitnami/laravel/
 ## Client
 
 ### Home 
-Admin login button on middle -> auth screen -> enables action buttons for datatables
-Comapnies button
-Employees button
+Admin login button on middle ;
+    -> auth screen -> enables action buttons for datatables
+Comapnies button;
+Employees button;
 
 ### Companies (From side menu or home)
 Datatable:
@@ -55,3 +56,15 @@ F name(REQ), L name(REQ), choose company(REQ), email, phone
  - company, employee migration down method implementation(foreign keys)
  - validationg email with "email" => "email:rfc,dns" (keep the option of leaving it empty)
  - validationg phone number with regex
+
+## other todos:
+ - auth
+ - auth in flutter
+ - open companies wothut hardcoded true
+ - show logo
+ - upload logo
+ - test the whole thing
+ - build
+ - test on different computer
+ - link to email, phone number
+
