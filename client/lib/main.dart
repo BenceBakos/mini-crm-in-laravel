@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
 import 'dart:typed_data';
 
+part 'api.dart';
 part 'auth.dart';
 part 'companies.dart';
 part 'editCompany.dart';
@@ -17,6 +18,7 @@ const String COMPANY_LOGO_BASE = "http://localhost:8001/company_logos/";
 const String ALL_TEXT = "-- ALL --";
 
 void main() async {
+  Api();
   runApp(const MyApp());
 }
 
@@ -67,14 +69,14 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => CompaniesView(authenticated: authenticated)));
+            builder: (context) => CompaniesView(authenticated: true)));
   }
 
     void _employee(context, authenticated) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => EmployeesView(authenticated: authenticated)));
+            builder: (context) => EmployeesView(authenticated: true)));
   }
 
   @override

@@ -21,7 +21,7 @@ class _CompaniesViewState extends State<CompaniesView> {
   }
 
   void _updateCompanyList() {
-    Dio().get(API_BASE + "company").then((r) {
+    Api.getCompanies().then((r) {
       setState(() {
         companies = r.data;
         if (companies.length != selected.length) {
@@ -59,35 +59,34 @@ class _CompaniesViewState extends State<CompaniesView> {
   void _delete_selected_compaines() async {
     int i = 0;
 
-    List<String> company_names_with_error = [];
+    List<String> companyNamesWithErrors = [];
 
     for (var item in selected) {
       if (item) {
         var company = companies[i];
-        try {
-          await Dio().delete(API_BASE + "company/" + company["id"].toString());
-        } on DioError catch (e) {
+
+        await Api.deleteCompany(company['id']).catchError((e) {
           var statusCode = e.response?.statusCode;
           if (statusCode is int && statusCode == 405) {
-            company_names_with_error.add(company['name']);
+            companyNamesWithErrors.add(company['name']);
           }
-        }
+        });
       }
       i++;
     }
 
     //show toast with error
-    if (company_names_with_error.length != 0) {
-      String error_message =
+    if (companyNamesWithErrors.isNotEmpty) {
+      String errorMessage =
           "Please remove every employee from the following companies befor removing the company itself:  " +
-              company_names_with_error.join(", ");
+              companyNamesWithErrors.join(", ");
 
       showDialog(
           context: context,
           builder: (BuildContext ctx) {
             return AlertDialog(
               title: const Text('Unable to remove some selected companies'),
-              content: Text(error_message),
+              content: Text(errorMessage),
               actions: [
                 TextButton(
                     onPressed: () {
@@ -123,18 +122,9 @@ class _CompaniesViewState extends State<CompaniesView> {
 
     if (result != null) {
       for (var file in result.files) {
-        final formData = FormData.fromMap({
-          'logo': MultipartFile.fromBytes(file.bytes as List<int>,
-              filename: "logo"),
-        });
-
-        Dio().post(
-          API_BASE + "company/upload_logo/" + company['id'].toString(),
-          data: formData,
-        ).then((value) => setState((){
-	    _updateCompanyList();
-	}));
-	
+        Api.uploadCompanyLogo(file, company['id']).then((value) => setState(() {
+              _updateCompanyList();
+            }));
       }
     }
   }

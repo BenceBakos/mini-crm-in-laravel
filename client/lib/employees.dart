@@ -24,7 +24,7 @@ class _EmployeesViewState extends State<EmployeesView> {
 
     _updateEmployeesList();
 
-    Dio().get(API_BASE + "company/").then((r) {
+    Api.getCompanies().then((r) {
       setState(() {
         _companyList = r.data;
         dropdownSelectedCompany = ALL_TEXT;
@@ -49,8 +49,8 @@ class _EmployeesViewState extends State<EmployeesView> {
   }
 
   void _updateEmployeesList() async {
-    var employees_from_api = await Dio().get(API_BASE + "employee");
-    var companies_from_api = await Dio().get(API_BASE + "company");
+    var companies_from_api = await Api.getCompanies();
+    var employees_from_api = await Api.getEmployees();
 
     List employee_list = employees_from_api.data;
     List company_list = companies_from_api.data;
@@ -101,7 +101,7 @@ class _EmployeesViewState extends State<EmployeesView> {
     for (var item in selected) {
       if (item) {
         var employee = employees[i];
-        await Dio().delete(API_BASE + "employee/" + employee["id"].toString());
+        await Api.deletEmployee(employee['id']);
       }
       i++;
     }

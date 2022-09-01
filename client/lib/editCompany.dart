@@ -23,13 +23,11 @@ class _EditCompanyViewState extends State<EditCompanyView> {
       if (widget.company_id != 0) {
         //edit existing one
 
-        try {
-          await Dio().put(API_BASE + "company/"+ widget.company_id.toString(), data: {
-            "name": _nameController.text,
-            "email": _emailController.text,
-            "website": _websiteController.text,
-          });
-        } on DioError catch (e) {
+        await Api.updateCompany(widget.company_id, {
+          "name": _nameController.text,
+          "email": _emailController.text,
+          "website": _websiteController.text,
+        }).catchError((e) {
           var statusCode = e.response?.statusCode;
           if (statusCode is int && (statusCode > 299 || statusCode < 200)) {
             String statusCodeString = statusCode.toString();
@@ -50,17 +48,15 @@ class _EditCompanyViewState extends State<EditCompanyView> {
                   );
                 });
           }
-        }
+        });
       } else {
         //create new one
 
-        try {
-          await Dio().post(API_BASE + "company", queryParameters: {
-            "name": _nameController.text,
-            "email": _emailController.text,
-            "website": _websiteController.text,
-          });
-        } on DioError catch (e) {
+        await Api.createCompany({
+          "name": _nameController.text,
+          "email": _emailController.text,
+          "website": _websiteController.text,
+        }).catchError((e) {
           showDialog(
               context: context,
               builder: (BuildContext ctx) {
@@ -76,7 +72,7 @@ class _EditCompanyViewState extends State<EditCompanyView> {
                   ],
                 );
               });
-        }
+        });
       }
 
       Navigator.pop(context);
@@ -97,7 +93,7 @@ class _EditCompanyViewState extends State<EditCompanyView> {
   }
 
   _updateCompanyData() {
-    Dio().get(API_BASE + "company/" + widget.company_id.toString()).then((r) {
+    Api.getCompany(widget.company_id).then((r) {
       setState(() {
         company = r.data;
       });
@@ -122,7 +118,7 @@ class _EditCompanyViewState extends State<EditCompanyView> {
     return Scaffold(
         appBar: AppBar(
           //title: const Text("Edit project"),
-          title: const Text("Edit project"),
+          title: const Text("Edit company"),
         ),
         body: Form(
             key: _formKey,

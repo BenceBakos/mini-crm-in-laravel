@@ -27,17 +27,13 @@ class _EditEmployeeViewState extends State<EditEmployeeView> {
       if (widget.employee_id != 0) {
         //edit existing one
 
-        try {
-          await Dio().put(
-              API_BASE + "employee/" + widget.employee_id.toString(),
-              data: {
-                "first_name": _firstNameController.text,
-                "last_name": _lastNameController.text,
-                "company_id": selectedCompanyId.toString(),
-                "email": _emailController.text,
-                "phone": _phoneController.text,
-              });
-        } on DioError catch (e) {
+        await Api.updateEmployee(widget.employee_id, {
+          "first_name": _firstNameController.text,
+          "last_name": _lastNameController.text,
+          "company_id": selectedCompanyId.toString(),
+          "email": _emailController.text,
+          "phone": _phoneController.text,
+        }).catchError((e) {
           var statusCode = e.response?.statusCode;
           if (statusCode is int && (statusCode > 299 || statusCode < 200)) {
             String statusCodeString = statusCode.toString();
@@ -58,19 +54,17 @@ class _EditEmployeeViewState extends State<EditEmployeeView> {
                   );
                 });
           }
-        }
+        });
       } else {
         //create new one
 
-        try {
-          await Dio().post(API_BASE + "employee", queryParameters: {
-            "first_name": _firstNameController.text,
-            "last_name": _lastNameController.text,
-            "company_id": selectedCompanyId.toString(),
-            "email": _emailController.text,
-            "phone": _phoneController.text,
-          });
-        } on DioError catch (e) {
+        await Api.createEmployee({
+          "first_name": _firstNameController.text,
+          "last_name": _lastNameController.text,
+          "company_id": selectedCompanyId.toString(),
+          "email": _emailController.text,
+          "phone": _phoneController.text,
+        }).catchError((e) {
           showDialog(
               context: context,
               builder: (BuildContext ctx) {
@@ -86,7 +80,7 @@ class _EditEmployeeViewState extends State<EditEmployeeView> {
                   ],
                 );
               });
-        }
+        });
       }
 
       Navigator.pop(context);
@@ -109,7 +103,8 @@ class _EditEmployeeViewState extends State<EditEmployeeView> {
   }
 
   _updateEmployeeData() {
-    Dio().get(API_BASE + "employee/" + widget.employee_id.toString()).then((r) {
+    Api.getEmployee(widget.employee_id).then((r) {
+
       setState(() {
         employee = r.data;
         selectedCompanyId = employee['company_id'];
@@ -118,14 +113,15 @@ class _EditEmployeeViewState extends State<EditEmployeeView> {
   }
 
   _updateCompanyList() {
-    Dio().get(API_BASE + "company/").then((r) {
+    Api.getCompanies().then((r) {
+
       setState(() {
         _companyList = r.data;
         dropdownSelectedCompany = _getCurrentDropdownCompany();
 
-	if (employee.length == 0){
-	    selectedCompanyId = _companyList[0]['id'];
-	}
+        if (employee.isEmpty) {
+          selectedCompanyId = _companyList[0]['id'];
+        }
       });
     });
   }
@@ -135,7 +131,7 @@ class _EditEmployeeViewState extends State<EditEmployeeView> {
     if (widget.employee_id != 0) {
       _updateEmployeeData();
     }
-      _updateCompanyList();
+    _updateCompanyList();
   }
 
   String _companyToDropdownString(Map company) {
@@ -159,16 +155,16 @@ class _EditEmployeeViewState extends State<EditEmployeeView> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.employee_id != 0 && employee.length != 0) {
+    if (widget.employee_id != 0 && employee.isNotEmpty) {
       _firstNameController.text = employee['first_name'];
-      _lastNameController.text = employee['first_name'];
+      _lastNameController.text = employee['last_name'];
       _emailController.text = employee['email'];
       _phoneController.text = employee['phone'];
     }
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Edit project"),
+          title: Text('Edit employee'),
         ),
         body: Form(
             key: _formKey,
