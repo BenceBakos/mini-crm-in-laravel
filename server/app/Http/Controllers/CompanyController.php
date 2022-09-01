@@ -81,8 +81,8 @@ class CompanyController extends Controller
 	$company->website = $request->website;
 
 	//get only filename
-	$logo_path = $request->file('logo')->store('storage/company_logos');
-	$logo_path = str_replace("storage/company_logos/","",$logo_path);
+	$logo_path = $request->file('logo')->store('public/company_logos');
+	$logo_path = str_replace("public/company_logos/","",$logo_path);
 	$company->logo = $logo_path;
 
         $company->save();
