@@ -118,6 +118,26 @@ class _CompaniesViewState extends State<CompaniesView> {
     });
   }
 
+  void _edit_icon(Map company) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      for (var file in result.files) {
+        final formData = FormData.fromMap({
+          'logo': MultipartFile.fromBytes(file.bytes as List<int>,
+              filename: "logo"),
+        });
+
+        Dio().post(
+          API_BASE + "company/upload_logo/" + company['id'].toString(),
+          data: formData,
+        ).then((value) => setState((){
+	    _updateCompanyList();
+	}));
+	
+      }
+    }
+  }
 
   void _edit(index) {
     Navigator.push(
@@ -192,7 +212,8 @@ class _CompaniesViewState extends State<CompaniesView> {
                             cells: <DataCell>[
                               DataCell(Container(
                                   width: 60,
-                                  child: Image.network(COMPANY_LOGO_BASE+companies[index]['logo']))),
+                                  child: Image.network(COMPANY_LOGO_BASE +
+                                      companies[index]['logo']))),
                               DataCell(Container(
                                   width: 120,
                                   child: Text(companies[index]['name']))),
@@ -216,6 +237,12 @@ class _CompaniesViewState extends State<CompaniesView> {
                                           ? () => _edit(index)
                                           : null,
                                       icon: Icon(Icons.edit)),
+                                  IconButton(
+                                      tooltip: "Edit company icon",
+                                      onPressed: widget.authenticated
+                                          ? () => _edit_icon(companies[index])
+                                          : null,
+                                      icon: Icon(Icons.picture_in_picture))
                                 ]),
                               ))
                             ],

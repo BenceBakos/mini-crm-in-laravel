@@ -28,7 +28,6 @@ class _EditCompanyViewState extends State<EditCompanyView> {
             "name": _nameController.text,
             "email": _emailController.text,
             "website": _websiteController.text,
-            "logo": _logoController.text,
           });
         } on DioError catch (e) {
           var statusCode = e.response?.statusCode;
@@ -60,7 +59,6 @@ class _EditCompanyViewState extends State<EditCompanyView> {
             "name": _nameController.text,
             "email": _emailController.text,
             "website": _websiteController.text,
-            "logo": _logoController.text,
           });
         } on DioError catch (e) {
           showDialog(
@@ -88,7 +86,6 @@ class _EditCompanyViewState extends State<EditCompanyView> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _websiteController = TextEditingController();
-  final _logoController = TextEditingController();
 
   @override
   void dispose() {
@@ -96,7 +93,6 @@ class _EditCompanyViewState extends State<EditCompanyView> {
     _nameController.dispose();
     _emailController.dispose();
     _websiteController.dispose();
-    _logoController.dispose();
     super.dispose();
   }
 
@@ -121,11 +117,11 @@ class _EditCompanyViewState extends State<EditCompanyView> {
       _nameController.text = company['name'];
       _emailController.text = company['email'];
       _websiteController.text = company['website'];
-      _logoController.text = company['logo'];
     }
 
     return Scaffold(
         appBar: AppBar(
+          //title: const Text("Edit project"),
           title: const Text("Edit project"),
         ),
         body: Form(
@@ -157,13 +153,6 @@ class _EditCompanyViewState extends State<EditCompanyView> {
                     controller: _websiteController,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), labelText: "Website"),
-                  )),
-              Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: TextFormField(
-                    controller: _logoController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: "Logo"),
                   )),
               Padding(
                   padding: const EdgeInsets.all(20),
