@@ -5,7 +5,4 @@
  - [code quality] running `down` method from `_create_comapnies_table.php` will result in broken foreign key references
  - [code quality] custom docker with nginx/apache as webserver. Current setup [having issues with CORS](https://github.com/fruitcake/laravel-cors/issues/504#issuecomment-1233990808)
 
-## other todos:
- - test the whole thing
- - build
- - test on different computer
+
