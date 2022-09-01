@@ -25,5 +25,6 @@ services:
     image: danjellz/http-server
     volumes:
         - "./client/build/web:/public"
+        - "./server/storage/app/public/company_logos/:/public/company_logos"
     ports:
         - "8001:8080"
