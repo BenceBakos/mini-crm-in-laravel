@@ -1,6 +1,6 @@
 # mini-crm-in-laravel
 
-*This project is for educational purposes only. For use in production, you should contact your local devops engineer, or at least change dangerous defaults in the `docker-compse.yaml` file regarding mariadb.*
+*This project is for educational purposes only.*
 
 ## Run
 
